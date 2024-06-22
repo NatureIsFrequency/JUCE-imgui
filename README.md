@@ -8,6 +8,7 @@ https://github.com/ocornut/imgui/wiki/Bindings#frameworkengine-backends
 # Usage  
 Download and add imgui_impl_juce.h, imgui_impl_juce.cpp, imgui_impl_juce_config.h to your projects source code  
 This needs to be used along with the OpenGL 3 Renderer (imgui_impl_opengl3) as Juce supports OpenGL  
+Integrate in a project using imgui and JUCE  
 See the provided example  
 
 # Implemented Features  
