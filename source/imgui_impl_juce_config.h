@@ -17,8 +17,6 @@
 * ==============================================================================
 */
 
-#pragma once
-
 /**
  * Imgui Config:
  * Per Imgui recommendation, we define our own imgui_config.h
@@ -37,6 +35,8 @@
  * Below we use thread_local storage
  * And we define MyImGuiTLS in imgui_impl_juce.cpp
  * */ 
+
+#pragma once
 
 struct ImGuiContext;
 extern thread_local ImGuiContext* MyImGuiTLS;
