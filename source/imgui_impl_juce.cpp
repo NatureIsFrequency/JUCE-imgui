@@ -66,7 +66,7 @@ static constexpr ImGuiMouseSource ImGui_ImplJuce_MouseInputSource_ToImGuiMouseSo
 }
 
 //==============================================================================
-static constexpr ImGuiMouseButton_ ImGui_ImplJuce_MouseModifierKeys_ToImGuiMouseButton
+static ImGuiMouseButton_ ImGui_ImplJuce_MouseModifierKeys_ToImGuiMouseButton
 (
     juce::ModifierKeys const& i_mouseModifierKeys
 )
@@ -416,7 +416,7 @@ void ImGui_Juce_Backend::mouseMove
 
     ImGuiIO& io = GetContextSpecificImGuiIO();
     io.AddMouseSourceEvent(ImGui_ImplJuce_MouseInputSource_ToImGuiMouseSource(i_mouseEvent.source.getType()));
-    io.AddMousePosEvent(i_mouseEvent.x, i_mouseEvent.y);
+    io.AddMousePosEvent(static_cast<float>(i_mouseEvent.x), static_cast<float>(i_mouseEvent.y));
 }
 
 //==============================================================================
@@ -462,7 +462,7 @@ void ImGui_Juce_Backend::mouseDrag
 
     ImGuiIO& io = GetContextSpecificImGuiIO();
     io.AddMouseSourceEvent(ImGui_ImplJuce_MouseInputSource_ToImGuiMouseSource(i_mouseEvent.source.getType()));
-    io.AddMousePosEvent(i_mouseEvent.x, i_mouseEvent.y);
+    io.AddMousePosEvent(static_cast<float>(i_mouseEvent.x), static_cast<float>(i_mouseEvent.y));
 }
 
 //==============================================================================
