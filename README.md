@@ -59,7 +59,7 @@ https://github.com/Krasjet/imgui_juce
 - [x] imgui docking branch https://github.com/ocornut/imgui/tree/docking  
 - [x] JUCE version 7.0.9  
 - [x] Platform: MacOS Silicon (Arm64 architecture)  
-- [ ] Platform: Windows 10 (x86_64 architecture)
+- [x] Platform: Windows 10 (x86_64 architecture)
 
 # Why use this JUCE imgui platform backend over existing dedicated platform backends e.g. osx/win32?  
 ## MacOS  
