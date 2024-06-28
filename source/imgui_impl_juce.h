@@ -72,7 +72,10 @@ public:
     void SetMouseWheelSensitivity(float i_mouseWheelSensitivity);
 
     //==============================================================================
-    void NewFrame();
+    // Default param 0.0 will internally use the openGLContext.getRenderingScale()
+    // But allow user to provide their own rendering scale
+    // As from testing have found JUCE's openGL rendering scale can be inaccurate on certain displays and platforms
+    void NewFrame(double i_renderingScale = 0.0);
 
     //==============================================================================
     // Used internally via ImGui_ImplJuce_SetClipboardText() and ImGui_ImplJuce_GetClipboardText()
