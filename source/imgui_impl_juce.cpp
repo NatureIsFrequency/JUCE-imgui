@@ -51,6 +51,16 @@
 
 thread_local ImGuiContext* MyImGuiTLS = nullptr;
 
+// Note: Since we dispatch x functions to the main thread (JUCE message thread) with juce::MessageManager::callAsync
+// It's possible for the ImGui_Juce_Backend class to be destructed before the JUCE message thread executes the dispatched function
+// Which crashes as it attempts to access ImGui_Juce_Backend class data which has already been destroyed.
+// Therefore, we use a global variable which lives outside of the scope of theImGui_Juce_Backend class
+// Setting to true on Construction, false on Destruction
+// Allowing the dispatched functions on the main thread to check this before accessing the data
+// Note that we therefore MUST always create/destroy the ImGui_Juce_Backend class on the main thread too
+// We ensure this is the case with JUCE_ASSERT_MESSAGE_THREAD in our main thread functions
+bool g_juceImguiBackendActive = false;
+
 //==============================================================================
 static constexpr ImGuiMouseSource ImGui_ImplJuce_MouseInputSource_ToImGuiMouseSource
 (
@@ -330,12 +340,16 @@ ImGui_Juce_Backend::ImGui_Juce_Backend
     io.ClipboardUserData = this;
     io.BackendPlatformName = "imgui_impl_juce";
     io.BackendFlags |= ImGuiBackendFlags_HasMouseCursors;
+
+    g_juceImguiBackendActive = true;
 }
 
 //==============================================================================
 ImGui_Juce_Backend::~ImGui_Juce_Backend()
 {
     JUCE_ASSERT_MESSAGE_THREAD
+
+    g_juceImguiBackendActive = false;
 
     // Removing mouse / key listeners must occur on the message thread
     m_owningComponent.removeMouseListener(this);
@@ -420,6 +434,11 @@ void ImGui_Juce_Backend::mouseMove
 {
     JUCE_ASSERT_MESSAGE_THREAD
 
+    if(!g_juceImguiBackendActive)
+    {
+        return;
+    }
+
     ImGuiIO& io = GetContextSpecificImGuiIO();
     io.AddMouseSourceEvent(ImGui_ImplJuce_MouseInputSource_ToImGuiMouseSource(i_mouseEvent.source.getType()));
     io.AddMousePosEvent(static_cast<float>(i_mouseEvent.x), static_cast<float>(i_mouseEvent.y));
@@ -453,6 +472,11 @@ void ImGui_Juce_Backend::mouseDown
 {
     JUCE_ASSERT_MESSAGE_THREAD
 
+    if(!g_juceImguiBackendActive)
+    {
+        return;
+    }
+
     ImGuiIO& io = GetContextSpecificImGuiIO();
     io.AddMouseSourceEvent(ImGui_ImplJuce_MouseInputSource_ToImGuiMouseSource(i_mouseEvent.source.getType()));
     io.AddMouseButtonEvent(ImGui_ImplJuce_MouseModifierKeys_ToImGuiMouseButton(i_mouseEvent.mods), true);
@@ -466,6 +490,11 @@ void ImGui_Juce_Backend::mouseDrag
 {
     JUCE_ASSERT_MESSAGE_THREAD
 
+    if(!g_juceImguiBackendActive)
+    {
+        return;
+    }
+
     ImGuiIO& io = GetContextSpecificImGuiIO();
     io.AddMouseSourceEvent(ImGui_ImplJuce_MouseInputSource_ToImGuiMouseSource(i_mouseEvent.source.getType()));
     io.AddMousePosEvent(static_cast<float>(i_mouseEvent.x), static_cast<float>(i_mouseEvent.y));
@@ -478,6 +507,11 @@ void ImGui_Juce_Backend::mouseUp
 )
 {
     JUCE_ASSERT_MESSAGE_THREAD
+
+    if(!g_juceImguiBackendActive)
+    {
+        return;
+    }
 
     ImGuiIO& io = GetContextSpecificImGuiIO();
     io.AddMouseSourceEvent(ImGui_ImplJuce_MouseInputSource_ToImGuiMouseSource(i_mouseEvent.source.getType()));
@@ -503,8 +537,12 @@ void ImGui_Juce_Backend::mouseWheelMove
 {
     JUCE_ASSERT_MESSAGE_THREAD
 
-    ImGuiIO& io = GetContextSpecificImGuiIO();
+    if(!g_juceImguiBackendActive)
+    {
+        return;
+    }
 
+    ImGuiIO& io = GetContextSpecificImGuiIO();
     io.AddMouseWheelEvent(i_mouseWheelDetails.deltaX * m_mouseWheelSensitivity
                         , i_mouseWheelDetails.deltaY * m_mouseWheelSensitivity);
 }
@@ -524,6 +562,11 @@ void ImGui_Juce_Backend::mouseMagnify
 void ImGui_Juce_Backend::UpdateModifierKeys()
 {
     JUCE_ASSERT_MESSAGE_THREAD
+
+    if(!g_juceImguiBackendActive)
+    {
+        return;
+    }
 
     ImGuiIO& io = GetContextSpecificImGuiIO();
 
@@ -566,6 +609,11 @@ void ImGui_Juce_Backend::UpdateKeyPresses()
 {
     JUCE_ASSERT_MESSAGE_THREAD
 
+    if(!g_juceImguiBackendActive)
+    {
+        return;
+    }
+
     if(m_keyPressesToProcess.empty())
     {
         return;
@@ -606,6 +654,11 @@ void ImGui_Juce_Backend::UpdateKeyPresses()
 void ImGui_Juce_Backend::UpdateKeyReleases()
 {
     JUCE_ASSERT_MESSAGE_THREAD
+
+    if(!g_juceImguiBackendActive)
+    {
+        return;
+    }
 
     if(m_currentActivePressedKeys <= 0)
     {
@@ -661,6 +714,11 @@ void ImGui_Juce_Backend::UpdateKeyReleases()
 void ImGui_Juce_Backend::UpdateMouseCursor()
 {
     JUCE_ASSERT_MESSAGE_THREAD
+
+    if(!g_juceImguiBackendActive)
+    {
+        return;
+    }
 
     ImGuiIO& io = GetContextSpecificImGuiIO();
 
