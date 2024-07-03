@@ -1,0 +1,93 @@
+diff --git a/BREAKING_CHANGES.md b/BREAKING_CHANGES.md
+index 662d54c43..882d0da7a 100644
+--- a/BREAKING_CHANGES.md
++++ b/BREAKING_CHANGES.md
+@@ -1,5 +1,31 @@
+ # JUCE breaking changes
+ 
++# develop
++
++## Change
++
++OpenGLContext::getRenderingScale() has been changed to include the effects of
++AffineTransforms on all platforms.
++
++**Possible Issues**
++
++Applications that use OpenGLContext::getRenderingScale() and also have scaling
++transformations that affect the context component's size may render incorrectly.
++
++**Workaround**
++
++Adjust rendering code by dividing the reported scale with the user specified
++transformation scale, if necessary.
++
++**Rationale**
++
++The previous implementation resulted in inconsistent behaviour between Windows
++and the other platforms. The main intended use-case for getRenderingScale() is
++to help determine the number of physical pixels covered by the context
++component. Since plugin windows will often use AffineTransforms to set up the
++correct rendering scale, it makes sense to include these in the result of
++getRenderingScale().
++
+ # Version 7.0.9
+ 
+ ## Change
+diff --git a/modules/juce_opengl/opengl/juce_OpenGLContext.cpp b/modules/juce_opengl/opengl/juce_OpenGLContext.cpp
+index a7c8e48b7..ef2586be8 100644
+--- a/modules/juce_opengl/opengl/juce_OpenGLContext.cpp
++++ b/modules/juce_opengl/opengl/juce_OpenGLContext.cpp
+@@ -459,17 +459,22 @@ public:
+             const auto localBounds = component.getLocalBounds();
+             const auto newArea = peer->getComponent().getLocalArea (&component, localBounds).withZeroOrigin() * displayScale;
+ 
+-            const auto newScale = [&]
+-            {
+-               #if JUCE_WINDOWS && JUCE_WIN_PER_MONITOR_DPI_AWARE
+-                // Some hosts (Pro Tools 2022.7) do not take the window scaling into account when sizing
+-                // plugin editor windows. The displayScale however seems to be correctly reported even in
+-                // such cases.
+-                return (float) displayScale * Desktop::getInstance().getGlobalScaleFactor();
+-               #else
+-                return (float) displayScale;
+-               #endif
+-            }();
++            // On Windows some hosts (Pro Tools 2022.7) do not take the current DPI into account
++            // when sizing plugin editor windows.
++            //
++            // Also in plugins on Windows, the plugin HWND's DPI settings generally don't reflect
++            // the desktop scaling setting and Displays::Display::scale will return an incorrect 1.0
++            // value. Our plugin wrappers will use a combination of querying the plugin HWND's
++            // parent HWND (the host HWND), and utilising the scale factor reported by the host
++            // through the plugin API. This scale is then added as a transformation to the
++            // AudioProcessorEditor.
++            //
++            // Hence, instead of querying the OS for the DPI of the editor window,
++            // we approximate based on the physical size of the window that was actually provided
++            // for the context to draw into. This may break if the OpenGL context's component is
++            // scaled differently in its width and height - but in this case, a single scale factor
++            // isn't that helpful anyway.
++            const auto newScale = (float) newArea.getWidth() / (float) localBounds.getWidth();
+ 
+             areaAndScale.set ({ newArea, newScale }, [&]
+             {
+diff --git a/modules/juce_opengl/opengl/juce_OpenGLContext.h b/modules/juce_opengl/opengl/juce_OpenGLContext.h
+index cb9ed766a..4ee80dbc5 100644
+--- a/modules/juce_opengl/opengl/juce_OpenGLContext.h
++++ b/modules/juce_opengl/opengl/juce_OpenGLContext.h
+@@ -271,9 +271,11 @@ public:
+     void executeOnGLThread (T&& functor, bool blockUntilFinished);
+ 
+     //==============================================================================
+-    /** Returns the scale factor used by the display that is being rendered.
+-
+-        The scale is that of the display - see Displays::Display::scale
++    /** Returns a scale factor that relates the context component's size to the number
++        of physical pixels it covers on the screen.
++        In special cases it will be the same as Displays::Display::scale, but it also
++        includes AffineTransforms that affect the rendered area, and will be correctly
++        reported not just in standalone applications but plugins as well.
+ 
+         Note that this should only be called during an OpenGLRenderer::renderOpenGL()
+         callback - at other times the value it returns is undefined.

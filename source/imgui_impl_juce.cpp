@@ -360,10 +360,7 @@ ImGui_Juce_Backend::~ImGui_Juce_Backend()
 }
 
 //==============================================================================
-void ImGui_Juce_Backend::NewFrame
-(
-    double const i_renderingScale /* = 0.0 */
-)
+void ImGui_Juce_Backend::NewFrame()
 {
     // Note: Valid to / Expected to call NewFrame() from render thread
 
@@ -371,10 +368,7 @@ void ImGui_Juce_Backend::NewFrame
 
     io.DisplaySize = ImVec2(static_cast<float>(m_owningComponent.getWidth()), static_cast<float>(m_owningComponent.getHeight()));
 
-    float const renderingScale = (i_renderingScale <= 0.0)
-                                ? static_cast<float>(m_openGLContext.getRenderingScale()) 
-                                : static_cast<float>(i_renderingScale);
-
+    float const renderingScale = static_cast<float>(m_openGLContext.getRenderingScale());
     io.DisplayFramebufferScale = ImVec2(renderingScale, renderingScale);
 
     // Ensuring thread safety by dispatching key update functions on the main thread (Juce message thread)

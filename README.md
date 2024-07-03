@@ -11,6 +11,10 @@ This needs to be used along with the OpenGL 3 Renderer (imgui_impl_opengl3) as J
 Integrate in a project using imgui and JUCE  
 See the provided example  
 
+# Required JUCE v7 openGL rendering scale fix  
+Please read the following if this is required for your JUCE project:  
+Juce_openGL_RenderingScale_Fix/README_Juce_openGL_renderingScale_fix.md  
+
 # Implemented Features  
 - [x] Platform: Mouse support. Can discriminate Mouse/TouchScreen/Pen.  
 - [x] Platform: Mouse cursor shape and visibility. Disable with 'io.ConfigFlags |= ImGuiConfigFlags_NoMouseCursorChange'.  
