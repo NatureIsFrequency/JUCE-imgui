@@ -32,8 +32,9 @@ Juce_openGL_RenderingScale_Fix/README_Juce_openGL_renderingScale_fix.md
 https://github.com/Krasjet/imgui_juce  
 ## Differences:  
 1. Lock-free implementation
-2. No patch required to edit the imgui source  
-    -> imgui now provides user config.h functionality for thread_local imguiContexts    
+2. No patch required to edit the imconfig.h source  
+    -> imgui now provides user config.h functionality for thread_local imguiContexts  
+    -> this is now handled within source/imgui_impl_juce_config.h  
 3. Fixes MacOS alert sound playing when keys are pressed
 4. Fixes MacOS missing text input support for:  
     -> command key support  
