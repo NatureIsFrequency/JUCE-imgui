@@ -59,7 +59,10 @@ thread_local ImGuiContext* MyImGuiTLS = nullptr;
 // Allowing the dispatched functions on the main thread to check this before accessing the data
 // Note that we therefore MUST always create/destroy the ImGui_Juce_Backend class on the main thread too
 // We ensure this is the case with JUCE_ASSERT_MESSAGE_THREAD in our main thread functions
-bool g_juceImguiBackendActive = false;
+namespace JuceImGuiBackend
+{
+    bool g_juceImguiBackendActive = false;
+}
 
 //==============================================================================
 static constexpr ImGuiMouseSource ImGui_ImplJuce_MouseInputSource_ToImGuiMouseSource
@@ -341,7 +344,7 @@ ImGui_Juce_Backend::ImGui_Juce_Backend
     io.BackendPlatformName = "imgui_impl_juce";
     io.BackendFlags |= ImGuiBackendFlags_HasMouseCursors;
 
-    g_juceImguiBackendActive = true;
+    JuceImGuiBackend::g_juceImguiBackendActive = true;
 }
 
 //==============================================================================
@@ -349,7 +352,7 @@ ImGui_Juce_Backend::~ImGui_Juce_Backend()
 {
     JUCE_ASSERT_MESSAGE_THREAD
 
-    g_juceImguiBackendActive = false;
+    JuceImGuiBackend::g_juceImguiBackendActive = false;
 
     // Removing mouse / key listeners must occur on the message thread
     m_owningComponent.removeMouseListener(this);
@@ -428,7 +431,7 @@ void ImGui_Juce_Backend::mouseMove
 {
     JUCE_ASSERT_MESSAGE_THREAD
 
-    if(!g_juceImguiBackendActive)
+    if(!JuceImGuiBackend::g_juceImguiBackendActive)
     {
         return;
     }
@@ -466,7 +469,7 @@ void ImGui_Juce_Backend::mouseDown
 {
     JUCE_ASSERT_MESSAGE_THREAD
 
-    if(!g_juceImguiBackendActive)
+    if(!JuceImGuiBackend::g_juceImguiBackendActive)
     {
         return;
     }
@@ -484,7 +487,7 @@ void ImGui_Juce_Backend::mouseDrag
 {
     JUCE_ASSERT_MESSAGE_THREAD
 
-    if(!g_juceImguiBackendActive)
+    if(!JuceImGuiBackend::g_juceImguiBackendActive)
     {
         return;
     }
@@ -502,7 +505,7 @@ void ImGui_Juce_Backend::mouseUp
 {
     JUCE_ASSERT_MESSAGE_THREAD
 
-    if(!g_juceImguiBackendActive)
+    if(!JuceImGuiBackend::g_juceImguiBackendActive)
     {
         return;
     }
@@ -531,7 +534,7 @@ void ImGui_Juce_Backend::mouseWheelMove
 {
     JUCE_ASSERT_MESSAGE_THREAD
 
-    if(!g_juceImguiBackendActive)
+    if(!JuceImGuiBackend::g_juceImguiBackendActive)
     {
         return;
     }
@@ -557,7 +560,7 @@ void ImGui_Juce_Backend::UpdateModifierKeys()
 {
     JUCE_ASSERT_MESSAGE_THREAD
 
-    if(!g_juceImguiBackendActive)
+    if(!JuceImGuiBackend::g_juceImguiBackendActive)
     {
         return;
     }
@@ -603,7 +606,7 @@ void ImGui_Juce_Backend::UpdateKeyPresses()
 {
     JUCE_ASSERT_MESSAGE_THREAD
 
-    if(!g_juceImguiBackendActive)
+    if(!JuceImGuiBackend::g_juceImguiBackendActive)
     {
         return;
     }
@@ -649,7 +652,7 @@ void ImGui_Juce_Backend::UpdateKeyReleases()
 {
     JUCE_ASSERT_MESSAGE_THREAD
 
-    if(!g_juceImguiBackendActive)
+    if(!JuceImGuiBackend::g_juceImguiBackendActive)
     {
         return;
     }
@@ -709,7 +712,7 @@ void ImGui_Juce_Backend::UpdateMouseCursor()
 {
     JUCE_ASSERT_MESSAGE_THREAD
 
-    if(!g_juceImguiBackendActive)
+    if(!JuceImGuiBackend::g_juceImguiBackendActive)
     {
         return;
     }
