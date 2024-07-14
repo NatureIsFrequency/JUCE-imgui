@@ -58,7 +58,8 @@ public:
     ImGui_Juce_Backend(juce::Component& i_owningComponent
                     , juce::OpenGLContext& i_openGLContext
                     , ImGuiContext& i_imGuiContext
-                    , float i_mouseWheelSensitivity = 1.0f);
+                    , float i_mouseWheelSensitivity = 1.0f
+                    , bool i_consumeKeyPresses = true);
     ~ImGui_Juce_Backend() override;
     ImGui_Juce_Backend(ImGui_Juce_Backend const&) = delete;
 
@@ -118,6 +119,7 @@ private:
     juce::OpenGLContext& m_openGLContext;
     ImGuiContext& m_imGuiContext;
     float m_mouseWheelSensitivity;
+    bool m_consumeKeyPresses;
 
     //==============================================================================
     static constexpr int s_pressedKeyArraySize = 256;

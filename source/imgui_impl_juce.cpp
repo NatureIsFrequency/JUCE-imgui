@@ -324,10 +324,12 @@ ImGui_Juce_Backend::ImGui_Juce_Backend
     , juce::OpenGLContext& i_openGLContext
     , ImGuiContext& i_imGuiContext
     , float const i_mouseWheelSensitivity /* = 1.0f */
+    , bool const i_consumeKeyPresses /* = true */
 )   : m_owningComponent(i_owningComponent)
     , m_openGLContext(i_openGLContext)
     , m_imGuiContext(i_imGuiContext)
     , m_mouseWheelSensitivity(i_mouseWheelSensitivity)
+    , m_consumeKeyPresses(i_consumeKeyPresses)
 {
     JUCE_ASSERT_MESSAGE_THREAD
 
@@ -778,8 +780,7 @@ bool ImGui_Juce_Backend::keyPressed
     m_keyPressesToProcess.push_back(i_keyPress);
 
     // Consume the key presses (See: juce/modules/juce_gui_basics/keyboard/juce_KeyListener.h keyPressed())
-    // Additionally this prevents the MacOS alert beep playing on key presses
-    return true;
+    return m_consumeKeyPresses;
 }
 
 //==============================================================================
