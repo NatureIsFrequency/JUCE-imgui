@@ -629,6 +629,28 @@ void ImGui_Juce_Backend::UpdateKeyPresses()
             io.AddInputCharacter(static_cast<unsigned int>(keyPress.getTextCharacter())); 
         }
 
+        /**
+         * Note: keyPressed() is continuously called when a key is held down
+         * If we pushed this into the m_pressedKeys array when held, we can easily exceed s_pressedKeyArraySize
+         * Therefore ignore this key if already down
+         * 
+         */
+
+        bool keyAlreadyDown = false;
+        for(int i = 0; i < s_pressedKeyArraySize; i++)
+        {
+            if(m_pressedKeys[i] == keyPress)
+            {
+                keyAlreadyDown = true;
+                break;
+            }   
+        }
+
+        if(keyAlreadyDown)
+        {
+            continue; // ignore already down key
+        }
+
         // Ensure there's a free slot (s_pressedKeyArraySize is set to a size where it should be extremely unlikely to reach)
         jassert(m_currentActivePressedKeys < s_pressedKeyArraySize);
 
