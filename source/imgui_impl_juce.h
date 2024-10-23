@@ -19,6 +19,7 @@
 
 // dear imgui: Platform Backend for Juce: https://github.com/juce-framework/JUCE
 // This needs to be used along with the OpenGL 3 Renderer (imgui_impl_opengl3) as Juce uses OpenGL
+// E.g ImGui_ImplOpenGL3_Init(juce::OpenGLHelpers::getGLSLVersionString().toUTF8())
 // Note: Juce handles platform responsibilities. So do NOT use with other platform backends (e.g. win32, osx)
 // TODO: Example Juce project using this backend: <TODO ADD GIT LINK HERE>
 
