@@ -1,0 +1,26 @@
+diff --git a/imgui.h b/imgui.h
+index 271c47dc2..b3af1f720 100644
+--- a/imgui.h
++++ b/imgui.h
+@@ -1745,6 +1745,21 @@ enum ImGuiMouseCursor_
+     ImGuiMouseCursor_ResizeNWSE,        // When hovering over the bottom-right corner of a window
+     ImGuiMouseCursor_Hand,              // (Unused by Dear ImGui functions. Use for e.g. hyperlinks)
+     ImGuiMouseCursor_NotAllowed,        // When hovering something with disallowed interaction. Usually a crossed circle.
++
++#if Juce_ImGuiMouseCursor_Extensions
++    ImGuiMouseCursor_ParentCursor,
++    ImGuiMouseCursor_WaitCursor,
++    ImGuiMouseCursor_CrosshairCursor,
++    ImGuiMouseCursor_CopyingCursor,
++    ImGuiMouseCursor_DraggingHandCursor,
++    ImGuiMouseCursor_TopEdgeResizeCursor,
++    ImGuiMouseCursor_BottomEdgeResizeCursor,
++    ImGuiMouseCursor_LeftEdgeResizeCursor,
++    ImGuiMouseCursor_RightEdgeResizeCursor,
++    ImGuiMouseCursor_TopLeftCornerResizeCursor,
++    ImGuiMouseCursor_TopRightCornerResizeCursor,
++#endif
++
+     ImGuiMouseCursor_COUNT
+ };
+ 

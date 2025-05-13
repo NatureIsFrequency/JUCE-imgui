@@ -41,3 +41,6 @@
 struct ImGuiContext;
 extern thread_local ImGuiContext* MyImGuiTLS;
 #define GImGui MyImGuiTLS
+
+// Juce_ImGuiMouseCursor_Extensions: Enable with 1, Disable with 0
+#define Juce_ImGuiMouseCursor_Extensions 1

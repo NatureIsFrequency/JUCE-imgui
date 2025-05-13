@@ -26,6 +26,7 @@
 // Implemented features:
 // [x] Platform: Mouse support. Can discriminate Mouse/TouchScreen/Pen.  
 // [x] Platform: Mouse cursor shape and visibility. Disable with 'io.ConfigFlags |= ImGuiConfigFlags_NoMouseCursorChange'.  
+// [x] Platform: Juce Mouse cursor extensions. See imgui_impl_juce_config.h
 // [x] Platform: Override Mouse wheel scroll sensitivity.  
 // [x] Platform: Keyboard support.  
 // [x] Platform: Clipboard support.  
@@ -121,6 +122,24 @@ static constexpr juce::MouseCursor::StandardCursorType ImGui_ImplJuce_ImGuiMouse
         case ImGuiMouseCursor_ResizeNWSE: return juce::MouseCursor::StandardCursorType::BottomRightCornerResizeCursor;
         case ImGuiMouseCursor_Hand: return juce::MouseCursor::StandardCursorType::PointingHandCursor;
 
+        /**
+         * Note: ImGui doesn't natively support the following Juce cursor types
+         * Extend ImGuiMouseCursor_ within imgui.h wrapped with this define to support these:
+        * */
+#if JUCE_ImGui_ImGuiMouseCursor_Extensions
+        case ImGuiMouseCursor_ParentCursor: return juce::MouseCursor::StandardCursorType::ParentCursor;
+        case ImGuiMouseCursor_WaitCursor: return juce::MouseCursor::StandardCursorType::WaitCursor;
+        case ImGuiMouseCursor_CrosshairCursor: return juce::MouseCursor::StandardCursorType::CrosshairCursor;
+        case ImGuiMouseCursor_CopyingCursor: return juce::MouseCursor::StandardCursorType::CopyingCursor;
+        case ImGuiMouseCursor_DraggingHandCursor: return juce::MouseCursor::StandardCursorType::DraggingHandCursor;
+        case ImGuiMouseCursor_TopEdgeResizeCursor: return juce::MouseCursor::StandardCursorType::TopEdgeResizeCursor;
+        case ImGuiMouseCursor_BottomEdgeResizeCursor: return juce::MouseCursor::StandardCursorType::BottomEdgeResizeCursor;
+        case ImGuiMouseCursor_LeftEdgeResizeCursor: return juce::MouseCursor::StandardCursorType::LeftEdgeResizeCursor;
+        case ImGuiMouseCursor_RightEdgeResizeCursor: return juce::MouseCursor::StandardCursorType::RightEdgeResizeCursor;
+        case ImGuiMouseCursor_TopLeftCornerResizeCursor: return juce::MouseCursor::StandardCursorType::TopLeftCornerResizeCursor;
+        case ImGuiMouseCursor_TopRightCornerResizeCursor: return juce::MouseCursor::StandardCursorType::TopRightCornerResizeCursor;
+#endif        
+
         default: return juce::MouseCursor::StandardCursorType::NormalCursor;
     }
 
@@ -128,21 +147,6 @@ static constexpr juce::MouseCursor::StandardCursorType ImGui_ImplJuce_ImGuiMouse
      * Juce doesn't currently support:
      * ImGuiMouseCursor_NotAllowed
      * */ 
-
-    /**
-     * ImGui doesn't currently support:
-     * juce::MouseCursor::StandardCursorType::ParentCursor
-     * juce::MouseCursor::StandardCursorType::WaitCursor
-     * juce::MouseCursor::StandardCursorType::CrosshairCursor
-     * juce::MouseCursor::StandardCursorType::CopyingCursor
-     * juce::MouseCursor::StandardCursorType::DraggingHandCursor
-     * juce::MouseCursor::StandardCursorType::TopEdgeResizeCursor
-     * juce::MouseCursor::StandardCursorType::BottomEdgeResizeCursor
-     * juce::MouseCursor::StandardCursorType::LeftEdgeResizeCursor
-     * juce::MouseCursor::StandardCursorType::RightEdgeResizeCursor
-     * juce::MouseCursor::StandardCursorType::TopLeftCornerResizeCursor
-     * juce::MouseCursor::StandardCursorType::TopRightCornerResizeCursor
-     * */
 }
 
 //==============================================================================

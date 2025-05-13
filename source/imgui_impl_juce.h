@@ -26,6 +26,7 @@
 // Implemented features:
 // [x] Platform: Mouse support. Can discriminate Mouse/TouchScreen/Pen.  
 // [x] Platform: Mouse cursor shape and visibility. Disable with 'io.ConfigFlags |= ImGuiConfigFlags_NoMouseCursorChange'.  
+// [x] Platform: Juce Mouse cursor extensions. See imgui_impl_juce_config.h
 // [x] Platform: Override Mouse wheel scroll sensitivity.  
 // [x] Platform: Keyboard support.  
 // [x] Platform: Clipboard support.  
