@@ -126,7 +126,7 @@ static constexpr juce::MouseCursor::StandardCursorType ImGui_ImplJuce_ImGuiMouse
          * Note: ImGui doesn't natively support the following Juce cursor types
          * Extend ImGuiMouseCursor_ within imgui.h wrapped with this define to support these:
         * */
-#if JUCE_ImGui_ImGuiMouseCursor_Extensions
+#if Juce_ImGuiMouseCursor_Extensions
         case ImGuiMouseCursor_ParentCursor: return juce::MouseCursor::StandardCursorType::ParentCursor;
         case ImGuiMouseCursor_WaitCursor: return juce::MouseCursor::StandardCursorType::WaitCursor;
         case ImGuiMouseCursor_CrosshairCursor: return juce::MouseCursor::StandardCursorType::CrosshairCursor;
