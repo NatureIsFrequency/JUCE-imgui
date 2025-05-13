@@ -11,14 +11,24 @@ This needs to be used along with the OpenGL 3 Renderer (imgui_impl_opengl3) as J
 E.g. ImGui_ImplOpenGL3_Init(juce::OpenGLHelpers::getGLSLVersionString().toUTF8())
 Integrate in a project using imgui and JUCE  
 See the provided example  
+Follow steps: "Required JUCE v7 openGL rendering scale fix"   
+Follow steps: "Required Juce ImGui MouseCursor Extensions"   
 
 # Required JUCE v7 openGL rendering scale fix  
 Please read the following if this is required for your JUCE project:  
 Juce_openGL_RenderingScale_Fix/README_Juce_openGL_renderingScale_fix.md  
 
+# Required Juce ImGui MouseCursor Extensions  
+Please read the following if this is required for your JUCE project:  
+Juce_ImGuiMouseCursor_Extensions/README_Juce_ImGuiMouseCursor_Extensions.md  
+Otherwise disable in imgui_impl_juce_config.h  
+#define Juce_ImGuiMouseCursor_Extensions 0  
+
+
 # Implemented Features  
 - [x] Platform: Mouse support. Can discriminate Mouse/TouchScreen/Pen.  
-- [x] Platform: Mouse cursor shape and visibility. Disable with 'io.ConfigFlags |= ImGuiConfigFlags_NoMouseCursorChange'.  
+- [x] Platform: Mouse cursor shape and visibility. Disable with 'io.ConfigFlags |= ImGuiConfigFlags_NoMouseCursorChange'.
+- [x] Platform: Juce Mouse cursor extensions. See imgui_impl_juce_config.h  
 - [x] Platform: Override Mouse wheel scroll sensitivity.  
 - [x] Platform: Keyboard support.  
 - [x] Platform: Clipboard support.  
