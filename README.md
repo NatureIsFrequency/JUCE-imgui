@@ -69,6 +69,7 @@ https://github.com/Krasjet/imgui_juce
     -> Which required command key support for copy and paste to and from clipboard  
 6. Extra mouse wheel scroll sensitivity  
     -> Allow user to speed up or slow down the mouse wheel scroll
+7. Supports Juce MouseCursor Extensions
 
 # Testing  
 - [x] imgui master branch https://github.com/ocornut/imgui  
