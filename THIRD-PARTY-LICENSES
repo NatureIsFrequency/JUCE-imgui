@@ -28,7 +28,9 @@ SOFTWARE.
 Juce: JUCE is an open-source cross-platform C++ application framework for desktop and mobile applications, including VST, VST3, AU, AUv3, LV2 and AAX audio plug-ins.
 https://github.com/juce-framework/JUCE
 
-This project uses JUCE (Under the GNU GPLv3 License)
+Projects using this repository https://github.com/NatureIsFrequency/JUCE-imgui
+Must follow the Juce license agreement
+https://github.com/juce-framework/JUCE/blob/master/LICENSE.md
 
 Juce license and EULA
 https://github.com/juce-framework/JUCE?tab=License-1-ov-file
